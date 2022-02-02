@@ -27,7 +27,7 @@ let songs = [
     {songName : "Let Me Love You", filePath: "songs/4.mp3", coverPath : "covers/4.jpg"},
     {songName : "Kya Baat Hai", filePath: "songs/5.mp3", coverPath : "covers/5.jpg"},
     {songName : "Jalebi Baby",      filePath: "songs/6.mp3", coverPath : "covers/6.jpg"},
-    {songName : "Salam-e-Ishq", filePath: "songs/7.mp3", coverPath : "covers/7.jpg"},
+    {songName : "Kehndi Hundi Si ", filePath: "songs/7.mp3", coverPath : "covers/7.jpg"},
     {songName : "G.O.A.T", filePath: "songs/8.mp3", coverPath : "covers/8.jpg"},
     {songName : "Haryanvi Mashup 3", filePath: "songs/9.mp3", coverPath : "covers/9.jpg"},
     {songName : "Era", filePath: "songs/9.mp3", coverPath : "covers/10.jpg"},

@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu&family=Varela+Round&display=swap');
 
 body {
-    background-color: antiquewhite;
+    background-color: black;
 }
 
 * {
@@ -39,7 +39,7 @@ nav ul li {
     width: 70%;
     border-radius: 12px;
     padding: 34px;
-    background-image: url('/assets/img/bg.jpg');
+    background-image: url('/assets/img/231.png');
     background-position: center;
 }
 .bottom {
