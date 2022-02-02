@@ -1,65 +1,124 @@
-console.log("Welcome to In(&)Out!!");
+let track_art = document.querySelector(".track-art");
+let track_name = document.querySelector(".track-name");
 
-let songIndex = 0 ;
-let audioElement = new Audio('/songs/1.mp3');
-let masterPlay = document.getElementById('masterPlay');
-let iid = 0;
-let myProgressBar = document.getElementById('myProgressBar');
-let gif = document.getElementById('gif');
+let playpause_btn = document.querySelector(".playpause-track");
+let next_btn = document.querySelector(".next-track");
+let prev_btn = document.querySelector(".prev-track");
+
+let seek_slider = document.querySelector(".seek_slider");
+let volume_slider = document.querySelector(".volume_slider");
+let curr_time = document.querySelector(".current-time");
+let total_duration = document.querySelector(".total-duration");
+
+let track_index = 0;
+let isPlaying = false;
+let updateTimer;
+
+// Create new audio element
+let curr_track = document.createElement('audio');
+
+// Define the tracks that have to be played
+
 let songItems = Array.from(document.getElementsByClassName('songItem'));
 let songs = [
-    {id:0,songName : "Namo Namo", filePath: "songs/1.mp3", coverPath : "covers/1.jpg"},
-    {id:1,songName : "Gangster", filePath: "songs/2.mp3", coverPath : "covers/2.jpg"},
-    {id:2,songName : "Believer", filePath: "songs/3.mp3", coverPath : "covers/3.jpg"},
-    {id:3,songName : "Let Me Love You", filePath: "songs/4.mp3", coverPath : "covers/4.jpg"},
-    {id:4,songName : "Kya Baat Hai", filePath: "songs/5.mp3", coverPath : "covers/5.jpg"},
-    {id:5,songName : "Jalebi Baby",      filePath: "songs/6.mp3", coverPath : "covers/6.jpg"},
-    {id:6,songName : "Kehndi Hundi Si Chan Tak Raah Bana De", filePath: "songs/7.mp3", coverPath : "covers/7.jpg"},
-    {id:7,songName : "G.O.A.T", filePath: "songs/8.mp3", coverPath : "covers/8.jpg"},
-    {id:8,songName : "Haryanvi Mashup 3", filePath: "songs/9.mp3", coverPath : "covers/9.jpg"},
-    {id:9,songName : "Era", filePath: "songs/9.mp3", coverPath : "covers/10.jpg"},
-]
-
+    {songName : "Namo Namo", filePath: "songs/1.mp3", coverPath : "covers/1.jpg"},
+    {songName : "Gangster", filePath: "songs/2.mp3", coverPath : "covers/2.jpg"},
+    {songName : "Believer", filePath: "songs/3.mp3", coverPath : "covers/3.jpg"},
+    {songName : "Let Me Love You", filePath: "songs/4.mp3", coverPath : "covers/4.jpg"},
+    {songName : "Kya Baat Hai", filePath: "songs/5.mp3", coverPath : "covers/5.jpg"},
+    {songName : "Jalebi Baby",      filePath: "songs/6.mp3", coverPath : "covers/6.jpg"},
+    {songName : "Kehndi Hundi Si ", filePath: "songs/7.mp3", coverPath : "covers/7.jpg"},
+    {songName : "G.O.A.T", filePath: "songs/8.mp3", coverPath : "covers/8.jpg"},
+    {songName : "Haryanvi Mashup 3", filePath: "songs/9.mp3", coverPath : "covers/9.jpg"},
+    {songName : "Era", filePath: "songs/10.mp3", coverPath : "covers/10.jpg"},
+];
 songItems.forEach((element,i)=>{
-   // console.log(element,i);
-    element.getElementsByTagName("img")[0].src = songs[i].coverPath;
+    // console.log(element,i);
     element.getElementsByClassName("songName")[0].innerText = songs[i].songName;
-})
+     element.getElementsByTagName("img")[0].src = songs[i].coverPath;
+ })
 
-masterPlay.addEventListener('click', ()=>{
-if(audioElement.paused || audioElement.currentTime<=0){
-    audioElement.play();
-    masterPlay.classList.remove('fa-play-circle');
-    masterPlay.classList.add('fa-pause-circle');
-    gif.style.opacity=1;
-    element.getElementsByClassName("songInfo").innerHTML=songs[iid].songName;
-}
-else{
-    audioElement.pause();
-    masterPlay.classList.remove('fa-pause-circle');
-    masterPlay.classList.add('fa-play-circle');
-    gif.style.opacity=0;
-}
-})
-audioElement.addEventListener('timeupdate' ,() =>{
-    //console.log('timeupdate');
-    progress = parseInt((audioElement.currentTime/audioElement.duration)*100);
-    myProgressBar.value = progress;
-})
-myProgressBar.addEventListener('change', ()=>{
-    audioElement.currentTime=myProgressBar.value * audioElement.duration / 100;
-})
-const makeAllPlays = ()=>{
-    Array.from(document.getElementsByClassName('songItemPlay')).forEach((element)=>{
-        e.target.classList.add('fa-pause-circle');
-    })
+
+function loadTrack(track_index) {
+  clearInterval(updateTimer);
+  resetValues();
+  curr_track.src = songs[track_index].filePath;
+  curr_track.load();
+  track_name.textContent = songs[track_index].songName;
+
+
+  updateTimer = setInterval(seekUpdate, 1000);
+  curr_track.addEventListener("ended", nextTrack);
 }
 
-Array.from(document.getElementsByClassName('songItemPlay')).forEach((element)=>{
-    element.addEventListener('click',()=>{
-    console.log(e.target);
-    makeAllPlays();
-    e.target.classList.remove('fa-play-circle');
-    e.target.classList.add('fa-pause-circle');
-    })
-})
+function resetValues() {
+  curr_time.textContent = "00:00";
+  total_duration.textContent = "00:00";
+  seek_slider.value = 0;
+}
+loadTrack(track_index);
+
+function playpauseTrack() {
+  if (!isPlaying) playTrack();
+  else pauseTrack();
+}
+
+function playTrack() {
+  curr_track.play();
+  isPlaying = true;
+  playpause_btn.innerHTML = '<i class="fa fa-pause-circle fa-2x"></i>';
+}
+
+function pauseTrack() {
+  curr_track.pause();
+  isPlaying = false;
+  playpause_btn.innerHTML = '<i class="fa fa-play-circle fa-2x"></i>';;
+}
+
+function nextTrack() {
+  if (track_index < songs.length)
+    track_index += 1;
+  else track_index = 0;
+  loadTrack(track_index);
+  playTrack();
+}
+
+function prevTrack() {
+  if (track_index > 0)
+    track_index -= 1;
+  else track_index = songs.length-1;
+  loadTrack(track_index);
+  playTrack();
+}
+
+function seekTo() {
+  let seekto = curr_track.duration * (seek_slider.value / 100);
+  curr_track.currentTime = seekto;
+}
+
+function setVolume() {
+  curr_track.volume = volume_slider.value / 100;
+}
+
+function seekUpdate() {
+  let seekPosition = 0;
+
+  if (!isNaN(curr_track.duration)) {
+    seekPosition = curr_track.currentTime * (100 / curr_track.duration);
+
+    seek_slider.value = seekPosition;
+
+    let currentMinutes = Math.floor(curr_track.currentTime / 60);
+    let currentSeconds = Math.floor(curr_track.currentTime - currentMinutes * 60);
+    let durationMinutes = Math.floor(curr_track.duration / 60);
+    let durationSeconds = Math.floor(curr_track.duration - durationMinutes * 60);
+
+    if (currentSeconds < 10) { currentSeconds = "0" + currentSeconds; }
+    if (durationSeconds < 10) { durationSeconds = "0" + durationSeconds; }
+    if (currentMinutes < 10) { currentMinutes = "0" + currentMinutes; }
+    if (durationMinutes < 10) { durationMinutes = "0" + durationMinutes; }
+
+    curr_time.textContent = currentMinutes + ":" + currentSeconds;
+    total_duration.textContent = durationMinutes + ":" + durationSeconds;
+  }
+}
