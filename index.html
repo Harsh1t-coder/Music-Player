@@ -9,18 +9,17 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <nav>
-        <ul class="flex items-center list-none h-[65px] bg-black text-white">
-            <li class="flex"><img class="w-[44px] pl-1 pr-1" src="/assets/img/logo.png" alt="spotify"><span class="pt-1">Music Player</span></li>
-            <li class="text-orange-400 hover:text-white pl-6"><a href="">Home</a></li>
-            <li class="text-orange-400 hover:text-white pl-2"><a href="">V1</a></li>
+    <nav class=>
+        <ul class="flex pl-[650px] items-center list-none h-[40px] bg-black text-white">
+            <li class="flex"><img class="w-[44px] text-xl pt-5  pl-1 pr-1" src="/assets/img/logo.png" alt="spotify">
+            <li class="pt-5 text-xl hover:text-orange-400">Music Player</span></li>    
             
         </ul>
     </nav>
 
     <div class="container">
         <div class="songList">
-            <h1 class="text-3xl font-black ml-10 mt-12">Your Favorites</h1>
+            <h1 class="text-3xl font-black ml-10 mt-12 hover:text-orange-400">Your Favorites</h1>
             <div class="songItemContainer">
                 
                 <div class="songItem">
@@ -90,7 +89,7 @@
         <div class="songBanner"></div>
     </div>
 
-    <div class="bottom mb-0">
+    <div class="bottom">
         <div class="slider_container flex ">
             <div class="current-time">00:00</div>
             <input type="range" min="1" max="100" value="0" class="seek_slider" onchange="seekTo()">
